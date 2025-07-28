@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crusoe Safari - Book Your Adventure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-green': '#123332',
+                        'dark-green': '#12271c',
+                        'accent-orange': '#84a972',
+                        'light-cream': '#f0f5f0',
+                        'text-light': '#E8E6E3',
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-green: #123332;
+            --dark-green: #12271c;
+            --accent-orange: #84a972;
+            --light-cream: #f0f5f0;
+            --text-light: #E8E6E3;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Quattrocento", serif;
+            font-weight: 400;
+            font-style: normal;
+            background: linear-gradient(135deg, rgba(18, 51, 50, 0.95), rgba(18, 39, 28, 0.9)), url('img/bg10.png');
+            background-size: cover;
+            background-attachment: fixed;
+            color: var(--text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        
+        .navbar {
+            background: rgba(18, 39, 28, 0.98) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(132, 169, 114, 0.2);
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text-light) !important;
+        }
+        
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            margin: 0 2rem;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 40px;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-orange) !important;
+        }
+        
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--accent-orange);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .navbar-nav .nav-link.active {
+            color: var(--accent-orange) !important;
+        }
+
+        .navbar-nav .nav-link.active::after {
+            width: 100%;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: 2rem;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(132, 169, 114, 0.3);
+        }
+
+        
+        .page-header {
+            padding: 150px 0 80px 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(18, 51, 50, 0.8), rgba(18, 39, 28, 0.6));
+        }
+
+        .page-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--light-cream);
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        
+        .progress-container {
+            background: rgba(18, 51, 50, 0.8);
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(132, 169, 114, 0.2);
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(132, 169, 114, 0.3);
+            border: 2px solid rgba(132, 169, 114, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-number {
+            background: var(--accent-orange);
+            border-color: var(--accent-orange);
+            color: white;
+        }
+
+        .step.completed .step-number {
+            background: #4CAF50;
+            border-color: #4CAF50;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            opacity: 0.7;
+            text-align: center;
+        }
+
+        .step.active .step-label {
+            opacity: 1;
+            color: var(--accent-orange);
+            font-weight: 600;
+        }
+
+        .step-connector {
+            position: absolute;
+            top: 25px;
+            left: 100%;
+            width: 3rem;
+            height: 2px;
+            background: rgba(132, 169, 114, 0.3);
+            z-index: 1;
+        }
+
+        .step.completed .step-connector {
+            background: var(--accent-orange);
+        }
+
+        .booking-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1rem;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 3rem;
+        }
+
+        .booking-form-section {
+            background: rgba(18, 51, 50, 0.9);
+            border-radius: 16px;
+            padding: 3rem;
+            border: 1px solid rgba(132, 169, 114, 0.2);
+            backdrop-filter: blur(10px);
+            height: fit-content;
+        }
+
+        .booking-summary {
+            background: rgba(18, 51, 50, 0.9);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(132, 169, 114, 0.2);
+            backdrop-filter: blur(10px);
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--light-cream);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+            animation: fadeInSlide 0.5s ease-out;
+        }
+
+        @keyframes fadeInSlide {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--light-cream);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(245, 243, 240, 0.1);
+            border: 2px solid rgba(132, 169, 114, 0.3);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 0 3px rgba(132, 169, 114, 0.2);
+        }
+
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: rgba(232, 230, 227, 0.6);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .tour-selection-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tour-option {
+            background: rgba(132, 169, 114, 0.1);
+            border: 2px solid rgba(132, 169, 114, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tour-option:hover {
+            border-color: var(--accent-orange);
+            background: rgba(132, 169, 114, 0.2);
+        }
+
+        .tour-option.selected {
+            border-color: var(--accent-orange);
+            background: rgba(132, 169, 114, 0.2);
+        }
+
+        .tour-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .tour-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .tour-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--light-cream);
+        }
+
+        .tour-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+        }
+
+        .tour-details {
+            color: var(--text-light);
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            background: rgba(132, 169, 114, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(132, 169, 114, 0.2);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-orange);
+        }
+
+        .checkbox-item label {
+            color: var(--text-light);
+            cursor: pointer;
+            flex: 1;
+        }
+
+        
+        .btn-primary {
+            background: var(--accent-orange);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: #6d8a5e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(132, 169, 114, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-orange);
+            border: 2px solid var(--accent-orange);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-orange);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(132, 169, 114, 0.2);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: var(--text-light);
+            opacity: 0.9;
+        }
+
+        .summary-value {
+            color: var(--light-cream);
+            font-weight: 600;
+        }
+
+        .total-section {
+            background: rgba(132, 169, 114, 0.2);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .total-amount {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .payment-method {
+            background: rgba(132, 169, 114, 0.1);
+            border: 2px solid rgba(132, 169, 114, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .payment-method:hover {
+            border-color: var(--accent-orange);
+        }
+
+        .payment-method.selected {
+            border-color: var(--accent-orange);
+            background: rgba(132, 169, 114, 0.2);
+        }
+
+        .payment-method input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .payment-icon {
+            font-size: 1.5rem;
+            color: var(--accent-orange);
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        
+    
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(18, 51, 50, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .loading-spinner {
+            font-size: 3rem;
+            color: var(--accent-orange);
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid #4CAF50;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+            color: #4CAF50;
+            display: none;
+        }
+
+        .error-message {
+            background: rgba(244, 67, 54, 0.2);
+            border: 2px solid #f44336;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            color: #f44336;
+            font-size: 0.9rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner"></i>
+            </div>
+            <h3>Processing Your Booking...</h3>
+            <p>Please wait while we confirm your safari adventure</p>
+        </div>
+    </div>
+
+   
+    <nav class="navbar fixed top-0 w-full z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <a class="navbar-brand" href="homepage.html">
+                    <img src="img/logo.png" class="w-44 h-20" alt="Crusoe Safari">
+                </a>
+                
+                <button class="lg:hidden text-text-light" onclick="toggleMobileMenu()">
+                    <span class="block w-6 h-0.5 bg-current mb-1"></span>
+                    <span class="block w-6 h-0.5 bg-current mb-1"></span>
+                    <span class="block w-6 h-0.5 bg-current"></span>
+                </button>
+                
+                <div class="hidden lg:flex items-center">
+                    <ul class="navbar-nav">
+                        <li><a class="nav-link" href="homepage.html">Home</a></li>
+                        <li><a class="nav-link active" href="#bookings">Bookings</a></li>
+                        <li><a class="nav-link" href="tours.html">Tours</a></li>
+                        <li><a class="nav-link" href="#gallery">Gallery</a></li>
+                        <li><a class="nav-link" href="#about">About</a></li>
+                    </ul>
+                    
+                    
+                    <div class="user-profile">
+                        <div class="profile-avatar" onclick="toggleProfileMenu()">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div id="navbarNav" class="hidden absolute top-full left-0 w-full bg-primary-green lg:hidden">
+                    <ul class="navbar-nav flex flex-col">
+                        <li><a class="nav-link block px-4 py-3" href="homepage.html">Home</a></li>
+                        <li><a class="nav-link active block px-4 py-3" href="#bookings">Bookings</a></li>
+                        <li><a class="nav-link block px-4 py-3" href="tours.html">Tours</a></li>
+                        <li><a class="nav-link block px-4 py-3" href="gallery.html">Gallery</a></li>
+                        <li><a class="nav-link block px-4 py-3" href="#about">About</a></li>
+                        <li><a class="nav-link block px-4 py-3" href="#profile">Profile</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    
+    <div class="page-header">
+        <div class="container mx-auto px-4">
+            <h1 class="page-title">Book Your Safari Adventure</h1>
+            <p class="page-subtitle">
+                Complete your booking in simple steps and get ready for an unforgettable wildlife experience in Sri Lanka
+            </p>
+        </div>
+    </div>
+
+   
+    <div class="progress-container">
+        <div class="progress-steps">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">Tour Selection</div>
+                <div class="step-connector"></div>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">Guest Details</div>
+                <div class="step-connector"></div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">Preferences</div>
+                <div class="step-connector"></div>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">Payment</div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="booking-container">
+        
+        <div class="booking-form-section">
+            
+            <div class="form-step active" id="step1">
+                <h2 class="section-title">
+                    <i class="fas fa-map-marked-alt"></i>
+                    Select Your Safari Tour
+                </h2>
+
+                <div class="form-group">
+                    <label class="form-label">Choose Forest/National Park</label>
+                    <select class="form-select" id="forestSelect" onchange="updateTourOptions()">
+                        <option value="">Select a destination</option>
+                        <option value="yala">Yala National Park</option>
+                        <option value="udawalawe">Udawalawe National Park</option>
+                        <option value="minneriya">Minneriya National Park</option>
+                        <option value="wilpattu">Wilpattu National Park</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Select Tour Package</label>
+                    <div class="tour-selection-grid" id="tourOptions">
+                        <div class="text-center" style="color: var(--text-light); opacity: 0.7; padding: 2rem;">
+                            Please select a forest first to view available tour packages
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-primary" onclick="nextStep(2)">
+                        Continue to Guest Details
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            
+            <div class="form-step" id="step2">
+                <h2 class="section-title">
+                    <i class="fas fa-users"></i>
+                    Guest Information
+                </h2>
+
+                <div class="form-group">
+                    <label class="form-label">Primary Contact Person</label>
+                    <div class="form-row">
+                        <input type="text" class="form-input" placeholder="First Name" id="firstName" required>
+                        <input type="text" class="form-input" placeholder="Last Name" id="lastName" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
+                        <div>
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-input" placeholder="your.email@example.com" id="email" required>
+                        </div>
+                        <div>
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-input" placeholder="+94 XX XXX XXXX" id="phone" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
+                        <div>
+                            <label class="form-label">Number of Adults</label>
+                            <select class="form-select" id="adults" onchange="updatePricing()">
+                                <option value="1">1 Adult</option>
+                                <option value="2">2 Adults</option>
+                                <option value="3">3 Adults</option>
+                                <option value="4">4 Adults</option>
+                                <option value="5">5 Adults</option>
+                                <option value="6">6+ Adults</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label">Number of Children (Under 12)</label>
+                            <select class="form-select" id="children" onchange="updatePricing()">
+                                <option value="0">No Children</option>
+                                <option value="1">1 Child</option>
+                                <option value="2">2 Children</option>
+                                <option value="3">3 Children</option>
+                                <option value="4">4+ Children</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Preferred Tour Date</label>
+                    <input type="date" class="form-input" id="tourDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Special Requirements or Comments</label>
+                    <textarea class="form-textarea" rows="3" placeholder="Any special dietary requirements, accessibility needs, or other comments..." id="comments"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="prevStep(1)">
+                        <i class="fas fa-arrow-left"></i>
+                        Back
+                    </button>
+                    <button type="button" class="btn-primary" onclick="nextStep(3)">
+                        Continue to Preferences
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            
+            <div class="form-step" id="step3">
+                <h2 class="section-title">
+                    <i class="fas fa-cogs"></i>
+                    Tour Preferences
+                </h2>
+
+                <div class="form-group">
+                    <label class="form-label">Preferred Start Time</label>
+                    <select class="form-select" id="startTime">
+                        <option value="early">Early Morning (5:30 AM)</option>
+                        <option value="morning">Morning (7:00 AM)</option>
+                        <option value="afternoon">Afternoon (2:00 PM)</option>
+                        <option value="sunset">Sunset Safari (4:00 PM)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Additional Services (Optional)</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="photography" value="photography" onchange="updatePricing()">
+                            <label for="photography">Professional Photography Service (+LKR 5,000)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="transport" value="transport" onchange="updatePricing()">
+                            <label for="transport">Hotel Pickup & Drop-off (+LKR 3,000)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lunch" value="lunch" onchange="updatePricing()">
+                            <label for="lunch">Premium Lunch Package (+LKR 2,500)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="equipment" value="equipment" onchange="updatePricing()">
+                            <label for="equipment">Binoculars & Equipment Rental (+LKR 1,500)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Wildlife Photography Preference</label>
+                    <select class="form-select" id="photoPreference">
+                        <option value="casual">Casual Photography</option>
+                        <option value="serious">Serious Photography (Extra stops)</option>
+                        <option value="professional">Professional Photography Tour</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Physical Activity Level</label>
+                    <select class="form-select" id="activityLevel">
+                        <option value="low">Low - Vehicle-based safari only</option>
+                        <option value="moderate">Moderate - Short walking opportunities</option>
+                        <option value="high">High - Extended walking and hiking</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="prevStep(2)">
+                        <i class="fas fa-arrow-left"></i>
+                        Back
+                    </button>
+                    <button type="button" class="btn-primary" onclick="nextStep(4)">
+                        Continue to Payment
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+           
+            <div class="form-step" id="step4">
+                <h2 class="section-title">
+                    <i class="fas fa-credit-card"></i>
+                    Payment Information
+                </h2>
+
+                <div class="form-group">
+                    <label class="form-label">Select Payment Method</label>
+                    <div class="payment-methods">
+                        <div class="payment-method selected" onclick="selectPayment('card')">
+                            <input type="radio" name="payment" value="card" checked>
+                            <div class="payment-icon"><i class="fas fa-credit-card"></i></div>
+                            <div class="payment-label">Credit Card</div>
+                        </div>
+                        <div class="payment-method" onclick="selectPayment('bank')">
+                            <input type="radio" name="payment" value="bank">
+                            <div class="payment-icon"><i class="fas fa-university"></i></div>
+                            <div class="payment-label">Bank Transfer</div>
+                        </div>
+                        <div class="payment-method" onclick="selectPayment('paypal')">
+                            <input type="radio" name="payment" value="paypal">
+                            <div class="payment-icon"><i class="fab fa-paypal"></i></div>
+                            <div class="payment-label">PayPal</div>
+                        </div>
+                        <div class="payment-method" onclick="selectPayment('cash')">
+                            <input type="radio" name="payment" value="cash">
+                            <div class="payment-icon"><i class="fas fa-money-bill-wave"></i></div>
+                            <div class="payment-label">Pay on Arrival</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="cardPaymentForm">
+                    <div class="form-group">
+                        <label class="form-label">Card Number</label>
+                        <input type="text" class="form-input" placeholder="1234 5678 9012 3456" id="cardNumber" maxlength="19">
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div>
+                                <label class="form-label">Expiry Date</label>
+                                <input type="text" class="form-input" placeholder="MM/YY" id="expiryDate" maxlength="5">
+                            </div>
+                            <div>
+                                <label class="form-label">CVV</label>
+                                <input type="text" class="form-input" placeholder="123" id="cvv" maxlength="3">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Cardholder Name</label>
+                        <input type="text" class="form-input" placeholder="John Doe" id="cardholderName">
+                    </div>
+                </div>
+
+                <div id="bankPaymentInfo" style="display: none;">
+                    <div style="background: rgba(132, 169, 114, 0.2); padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                        <h4 style="color: var(--accent-orange); margin-bottom: 1rem;">Bank Transfer Details</h4>
+                        <div style="color: var(--text-light);">
+                            <p><strong>Bank:</strong> Commercial Bank of Ceylon</p>
+                            <p><strong>Account Name:</strong> Crusoe Safari Adventures</p>
+                            <p><strong>Account Number:</strong> 8001234567890</p>
+                            <p><strong>Branch:</strong> Colombo Main Branch</p>
+                            <p><strong>SWIFT Code:</strong> CCEYLKLX</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="paypalInfo" style="display: none;">
+                    <div style="background: rgba(132, 169, 114, 0.2); padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                        <p style="color: var(--text-light);">You will be redirected to PayPal to complete your payment securely.</p>
+                    </div>
+                </div>
+
+                <div id="cashInfo" style="display: none;">
+                    <div style="background: rgba(132, 169, 114, 0.2); padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                        <p style="color: var(--text-light);">A 20% deposit is required to confirm your booking. The remaining amount can be paid on arrival at the safari location.</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">I agree to the <a href="#" style="color: var(--accent-orange);">Terms and Conditions</a> and <a href="#" style="color: var(--accent-orange);">Privacy Policy</a></label>
+                    </div>
+                </div>
+
+                <div class="error-message" id="errorMessage"></div>
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i>
+                    Booking confirmed successfully! Check your email for confirmation details.
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="prevStep(3)">
+                        <i class="fas fa-arrow-left"></i>
+                        Back
+                    </button>
+                    <button type="button" class="btn-primary" onclick="completeBooking()">
+                        <i class="fas fa-lock"></i>
+                        Complete Booking
+                    </button>
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="booking-summary">
+            <h3 class="section-title">
+                <i class="fas fa-receipt"></i>
+                Booking Summary
+            </h3>
+
+            <div class="summary-item">
+                <span class="summary-label">Destination:</span>
+                <span class="summary-value" id="summaryDestination">Not selected</span>
+            </div>
+
+            <div class="summary-item">
+                <span class="summary-label">Tour Package:</span>
+                <span class="summary-value" id="summaryPackage">Not selected</span>
+            </div>
+
+            <div class="summary-item">
+                <span class="summary-label">Date:</span>
+                <span class="summary-value" id="summaryDate">Not selected</span>
+            </div>
+
+            <div class="summary-item">
+                <span class="summary-label">Guests:</span>
+                <span class="summary-value" id="summaryGuests">Not specified</span>
+            </div>
+
+            <div class="summary-item">
+                <span class="summary-label">Start Time:</span>
+                <span class="summary-value" id="summaryTime">Not selected</span>
+            </div>
+
+            <div class="summary-item" id="additionalServices" style="display: none;">
+                <span class="summary-label">Additional Services:</span>
+                <span class="summary-value" id="summaryServices">None</span>
+            </div>
+
+            <div class="total-section">
+                <div class="summary-item">
+                    <span class="summary-label">Base Price:</span>
+                    <span class="summary-value" id="basePrice">LKR 0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Additional Services:</span>
+                    <span class="summary-value" id="servicesPrice">LKR 0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Tax (12%):</span>
+                    <span class="summary-value" id="taxAmount">LKR 0</span>
+                </div>
+                <div class="total-amount">
+                    <span>Total Amount:</span>
+                    <span id="totalAmount">LKR 0</span>
+                </div>
+            </div>
+
+            <div style="background: rgba(132, 169, 114, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                <h4 style="color: var(--accent-orange); margin-bottom: 0.5rem;">What's Included:</h4>
+                <ul style="color: var(--text-light); font-size: 0.9rem; opacity: 0.9; list-style: none; padding: 0;">
+                    <li>✓ Professional safari guide</li>
+                    <li>✓ 4x4 safari vehicle</li>
+                    <li>✓ Park entrance fees</li>
+                    <li>✓ Refreshments during tour</li>
+                    <li>✓ Wildlife spotting guarantee</li>
+                    <li>✓ Insurance coverage</li>
+                </ul>
+            </div>
+
+            <div style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                <div style="color: #ffc107; font-weight: 600; margin-bottom: 0.5rem;">
+                    <i class="fas fa-info-circle"></i> Important Notes:
+                </div>
+                <ul style="color: var(--text-light); font-size: 0.85rem; opacity: 0.9; list-style: none; padding: 0;">
+                    <li>• Free cancellation up to 24 hours before tour</li>
+                    <li>• Weather conditions may affect tour schedule</li>
+                    <li>• Wildlife sightings cannot be guaranteed</li>
+                    <li>• Age restrictions apply for certain activities</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        const tourPackages = {
+            yala: [
+                { name: "Half Day Explorer", duration: "4 Hours", price: 8500, description: "Main circuit exploration with professional guide" },
+                { name: "Full Day Adventure", duration: "8 Hours", price: 15000, description: "Extended safari with lunch and multiple game drives" },
+                { name: "Premium Wildlife", duration: "6 Hours", price: 22000, description: "Exclusive routes with naturalist guide" },
+                { name: "Luxury Safari", duration: "10 Hours", price: 35000, description: "Private vehicle with professional photography guide" }
+            ],
+            udawalawe: [
+                { name: "Elephant Encounter", duration: "5 Hours", price: 9500, description: "Elephant-focused tour with orphanage visit" },
+                { name: "Photography Safari", duration: "7 Hours", price: 18000, description: "Photography-focused with professional guidance" },
+                { name: "Nature Explorer", duration: "6 Hours", price: 16500, description: "Diverse wildlife routes with bird watching" },
+                { name: "Ultimate Udawalawe", duration: "12 Hours", price: 32000, description: "Comprehensive park tour with sunrise & sunset drives" }
+            ],
+            minneriya: [
+                { name: "The Gathering Tour", duration: "4 Hours", price: 10000, description: "Elephant gathering focus with cultural sites" },
+                { name: "Heritage & Wildlife", duration: "8 Hours", price: 19500, description: "Historical sites with multiple game drives" },
+                { name: "Wetland Safari", duration: "6 Hours", price: 17000, description: "Wetland ecosystems with bird watching" },
+                { name: "Royal Minneriya", duration: "10 Hours", price: 38000, description: "VIP access with ancient palace ruins tour" }
+            ],
+            wilpattu: [
+                { name: "Wilderness Explorer", duration: "5 Hours", price: 11000, description: "Dense forest exploration with leopard tracking" },
+                { name: "Leopard Tracker", duration: "9 Hours", price: 21000, description: "Leopard behavior study with extended tracking" },
+                { name: "Lake Circuit Safari", duration: "7 Hours", price: 18500, description: "All major willus tour with lakeside picnic" },
+                { name: "Pristine Wilpattu", duration: "12 Hours", price: 42000, description: "Complete park coverage with wilderness dining" }
+            ]
+        };
+
+        const forestNames = {
+            yala: "Yala National Park",
+            udawalawe: "Udawalawe National Park",
+            minneriya: "Minneriya National Park",
+            wilpattu: "Wilpattu National Park"
+        };
+
+        let currentStep = 1;
+        let selectedTour = null;
+        let bookingData = {
+            additionalServices: []
+        };
+
+        
+        function nextStep(step) {
+            if (validateCurrentStep()) {
+                updateStepProgress(step);
+                showStep(step);
+                updateSummary();
+            }
+        }
+
+        function prevStep(step) {
+            updateStepProgress(step);
+            showStep(step);
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+            currentStep = step;
+        }
+
+        function updateStepProgress(step) {
+            document.querySelectorAll('.step').forEach(el => {
+                const stepNum = parseInt(el.dataset.step);
+                el.classList.remove('active', 'completed');
+                
+                if (stepNum === step) {
+                    el.classList.add('active');
+                } else if (stepNum < step) {
+                    el.classList.add('completed');
+                }
+            });
+        }
+
+        
+        function updateTourOptions() {
+            const forest = document.getElementById('forestSelect').value;
+            const tourOptionsContainer = document.getElementById('tourOptions');
+            
+            if (!forest) {
+                tourOptionsContainer.innerHTML = `
+                    <div class="text-center" style="color: var(--text-light); opacity: 0.7; padding: 2rem;">
+                        Please select a forest first to view available tour packages
+                    </div>
+                `;
+                return;
+            }
+
+            const packages = tourPackages[forest];
+            tourOptionsContainer.innerHTML = packages.map(tour => `
+                <div class="tour-option" onclick="selectTour('${forest}', '${tour.name}', ${tour.price})">
+                    <input type="radio" name="tour" value="${tour.name}">
+                    <div class="tour-header">
+                        <div class="tour-name">${tour.name}</div>
+                        <div class="tour-price">LKR ${tour.price.toLocaleString()}</div>
+                    </div>
+                    <div class="tour-details">
+                        <strong>${tour.duration}</strong> - ${tour.description}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectTour(forest, tourName, price) {
+            document.querySelectorAll('.tour-option').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            
+            selectedTour = {
+                forest: forest,
+                name: tourName,
+                price: price
+            };
+            
+            updateSummary();
+        }
+
+        
+        function selectPayment(method) {
+            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            
+            
+            document.getElementById('cardPaymentForm').style.display = method === 'card' ? 'block' : 'none';
+            document.getElementById('bankPaymentInfo').style.display = method === 'bank' ? 'block' : 'none';
+            document.getElementById('paypalInfo').style.display = method === 'paypal' ? 'block' : 'none';
+            document.getElementById('cashInfo').style.display = method === 'cash' ? 'block' : 'none';
+        }
+
+        
+        function updatePricing() {
+            if (!selectedTour) return;
+
+            const adults = parseInt(document.getElementById('adults')?.value || 1);
+            const children = parseInt(document.getElementById('children')?.value || 0);
+            
+            let basePrice = selectedTour.price * adults + (selectedTour.price * 0.5 * children);
+            let servicesPrice = 0;
+
+            
+            const services = [];
+            if (document.getElementById('photography')?.checked) {
+                servicesPrice += 5000;
+                services.push('Photography Service');
+            }
+            if (document.getElementById('transport')?.checked) {
+                servicesPrice += 3000;
+                services.push('Hotel Transport');
+            }
+            if (document.getElementById('lunch')?.checked) {
+                servicesPrice += 2500;
+                services.push('Premium Lunch');
+            }
+            if (document.getElementById('equipment')?.checked) {
+                servicesPrice += 1500;
+                services.push('Equipment Rental');
+            }
+
+            const subtotal = basePrice + servicesPrice;
+            const tax = subtotal * 0.12;
+            const total = subtotal + tax;
+
+            
+            document.getElementById('basePrice').textContent = `LKR ${basePrice.toLocaleString()}`;
+            document.getElementById('servicesPrice').textContent = `LKR ${servicesPrice.toLocaleString()}`;
+            document.getElementById('taxAmount').textContent = `LKR ${tax.toLocaleString()}`;
+            document.getElementById('totalAmount').textContent = `LKR ${total.toLocaleString()}`;
+
+            // Update services display
+            const servicesElement = document.getElementById('additionalServices');
+            if (services.length > 0) {
+                servicesElement.style.display = 'flex';
+                document.getElementById('summaryServices').textContent = services.join(', ');
+            } else {
+                servicesElement.style.display = 'none';
+            }
+
+            bookingData.pricing = { basePrice, servicesPrice, tax, total };
+        }
+
+        
+        function updateSummary() {
+            
+            const forest = document.getElementById('forestSelect')?.value;
+            if (forest) {
+                document.getElementById('summaryDestination').textContent = forestNames[forest];
+            }
+
+            
+            if (selectedTour) {
+                document.getElementById('summaryPackage').textContent = selectedTour.name;
+            }
+
+            
+            const date = document.getElementById('tourDate')?.value;
+            if (date) {
+                document.getElementById('summaryDate').textContent = new Date(date).toLocaleDateString();
+            }
+
+            
+            const adults = document.getElementById('adults')?.value;
+            const children = document.getElementById('children')?.value;
+            if (adults) {
+                let guestText = `${adults} Adult${adults > 1 ? 's' : ''}`;
+                if (children > 0) {
+                    guestText += `, ${children} Child${children > 1 ? 'ren' : ''}`;
+                }
+                document.getElementById('summaryGuests').textContent = guestText;
+            }
+
+            
+            const time = document.getElementById('startTime')?.value;
+            if (time) {
+                const timeLabels = {
+                    early: 'Early Morning (5:30 AM)',
+                    morning: 'Morning (7:00 AM)',
+                    afternoon: 'Afternoon (2:00 PM)',
+                    sunset: 'Sunset Safari (4:00 PM)'
+                };
+                document.getElementById('summaryTime').textContent = timeLabels[time];
+            }
+
+            updatePricing();
+        }
+
+        
+        function validateCurrentStep() {
+            const errors = [];
+
+            if (currentStep === 1) {
+                if (!document.getElementById('forestSelect').value) {
+                    errors.push('Please select a destination');
+                }
+                if (!selectedTour) {
+                    errors.push('Please select a tour package');
+                }
+            } else if (currentStep === 2) {
+                if (!document.getElementById('firstName').value.trim()) {
+                    errors.push('First name is required');
+                }
+                if (!document.getElementById('lastName').value.trim()) {
+                    errors.push('Last name is required');
+                }
+                if (!document.getElementById('email').value.trim()) {
+                    errors.push('Email is required');
+                }
+                if (!document.getElementById('phone').value.trim()) {
+                    errors.push('Phone number is required');
+                }
+                if (!document.getElementById('tourDate').value) {
+                    errors.push('Tour date is required');
+                }
+            } else if (currentStep === 3) {
+                
+            } else if (currentStep === 4) {
+                if (!document.getElementById('terms').checked) {
+                    errors.push('Please accept the terms and conditions');
+                }
+                
+                const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+                if (selectedPayment === 'card') {
+                    if (!document.getElementById('cardNumber').value.trim()) {
+                        errors.push('Card number is required');
+                    }
+                    if (!document.getElementById('expiryDate').value.trim()) {
+                        errors.push('Expiry date is required');
+                    }
+                    if (!document.getElementById('cvv').value.trim()) {
+                        errors.push('CVV is required');
+                    }
+                    if (!document.getElementById('cardholderName').value.trim()) {
+                        errors.push('Cardholder name is required');
+                    }
+                }
+            }
+
+            if (errors.length > 0) {
+                showError(errors.join(', '));
+                return false;
+            }
+
+            hideError();
+            return true;
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        
+        function completeBooking() {
+            if (!validateCurrentStep()) return;
+
+            
+            document.getElementById('loadingOverlay').classList.add('active');
+
+           
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').classList.remove('active');
+                document.getElementById('successMessage').style.display = 'block';
+                
+               
+                document.getElementById('successMessage').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+
+                
+                setTimeout(() => {
+                    
+                }, 3000);
+            }, 3000);
+        }
+
+        
+        document.getElementById('cardNumber')?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+
+        
+        document.getElementById('expiryDate')?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        
+        function toggleMobileMenu() {
+            const navbar = document.getElementById('navbarNav');
+            navbar.classList.toggle('hidden');
+        }
+
+        
+        function toggleProfileMenu() {
+            console.log('Profile menu clicked');
+        }
+
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tourDate').setAttribute('min', today);
+        });
+
+        
+        function getURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('forest')) {
+                document.getElementById('forestSelect').value = params.get('forest');
+                updateTourOptions();
+            }
+            if (params.get('package')) {
+                
+                setTimeout(() => {
+                    const packageName = params.get('package');
+                    const tourOption = Array.from(document.querySelectorAll('.tour-option')).find(
+                        el => el.querySelector('.tour-name').textContent === packageName
+                    );
+                    if (tourOption) {
+                        tourOption.click();
+                    }
+                }, 100);
+            }
+        }
+
+       
+        getURLParams();
+    </script>
+</body>
+</html>

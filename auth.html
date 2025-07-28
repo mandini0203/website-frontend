@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crusoe Safari - Authentication</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-green': '#123332',
+                        'dark-green': '#12271c',
+                        'accent-orange': '#D4845C',
+                        'light-cream': '#F5F3F0',
+                        'text-light': '#E8E6E3',
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <style>
+        :root {
+            --primary-green: #123332;
+            --dark-green: #12271c;
+            --accent-orange: #D4845C;
+            --light-cream: #F5F3F0;
+            --text-light: #E8E6E3;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Quattrocento", serif;
+            font-weight: 400;
+            background: url(img/bg2.jpg);
+            background-size: cover;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--text-light);
+            overflow-x: hidden;
+            backdrop-filter: blur(8px);
+        }
+        
+       
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(4, 58, 4, 0.4); 
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+       
+        .navbar {
+            background: transparent !important;
+            padding: 0.8rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text-light) !important;
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            margin: 0 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-orange) !important;
+        }
+        
+       
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+        
+        .auth-card {
+            background: rgba(18, 51, 50, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 132, 92, 0.2);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 450px;
+            margin: 0 1rem;
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            justify-content: center !important;
+        }
+        
+        .auth-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--light-cream);
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-subtitle {
+            color: var(--text-light);
+            opacity: 0.8;
+            font-size: 1rem;
+        }
+        
+       
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            color: var(--light-cream);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .form-control {
+            background: rgba(245, 243, 240, 0.1);
+            border: 2px solid rgba(212, 132, 92, 0.3);
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            background: rgba(245, 243, 240, 0.15);
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 0 0.2rem rgba(212, 132, 92, 0.25);
+            color: var(--text-light);
+        }
+        
+        .form-control::placeholder {
+            color: rgba(232, 230, 227, 0.6);
+        }
+        
+        
+        .password-toggle {
+            position: relative;
+        }
+        
+        .password-toggle-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--accent-orange);
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        
+       
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--accent-orange) 0%, #c5754a 100%);
+            border: none;
+            color: var(--light-cream);
+            padding: 0.9rem 2rem;
+            font-weight: 600;
+            border-radius: 10px;
+            width: 100%;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 132, 92, 0.4);
+            background: linear-gradient(135deg, #c5754a 0%, var(--accent-orange) 100%);
+        }
+        
+        .btn-google {
+            background: #ffffff;
+            border: 2px solid #dadce0;
+            color: #3c4043;
+            padding: 0.9rem 2rem;
+            font-weight: 500;
+            border-radius: 10px;
+            width: 100%;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            font-size: 1rem;
+        }
+        
+        .btn-google:hover {
+            background: #f8f9fa;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+            color: #3c4043;
+        }
+        
+        .google-icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+       
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(212, 132, 92, 0.3);
+        }
+        
+        .divider span {
+            background: rgba(18, 51, 50, 0.95);
+            padding: 0 1rem;
+            color: var(--text-light);
+            opacity: 0.7;
+        }
+        
+       
+        .auth-link {
+            color: var(--accent-orange);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-link:hover {
+            color: #c5754a;
+            text-decoration: underline;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .mt-3 {
+            margin-top: 1rem;
+        }
+        
+       
+        .form-check {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-check-input {
+            background-color: rgba(245, 243, 240, 0.1);
+            border: 2px solid rgba(212, 132, 92, 0.3);
+            margin-right: 0.5rem;
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--accent-orange);
+            border-color: var(--accent-orange);
+        }
+        
+        .form-check-label {
+            color: var(--text-light);
+            opacity: 0.9;
+        }
+        
+        
+        
+        
+        
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+        }
+        
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        
+        .alert-custom {
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border: none;
+            padding: 0.8rem 1rem;
+        }
+        
+        .alert-success {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+            border-left: 4px solid #28a745;
+        }
+        
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+            border-left: 4px solid #dc3545;
+        }
+    </style>
+
+    
+    <nav class="navbar fixed top-0 w-full z-50">
+        <div class="container mx-auto px-4">
+            <div class="navbar-nav flex justify-end">
+                <a class="nav-link" href="index.html">← Back to Home</a>
+            </div>
+        </div>
+    </nav>
+
+    
+    <div class="auth-container">
+       
+        <div class="auth-card" id="loginForm">
+            <div class="auth-header">
+                <img src="img/logo.png" class="w-36 h-16" alt="Crusoe Safari"><br><br>
+                <h1 class="auth-title">Welcome Back !</h1>
+                <p class="auth-subtitle">Sign in to continue your safari adventure with <b>CRUSOE SAFARI</b></p>
+            </div>
+
+            
+            <button class="btn-google" onclick="signInWithGoogle()">
+                <svg class="google-icon" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Continue with Google
+            </button>
+
+            <div class="divider">
+                <span>or</span>
+            </div>
+
+            <form id="loginFormData">
+                <div class="form-group">
+                    <label for="loginEmail" class="form-label block">Email Address</label>
+                    <input type="email" class="form-control w-full" id="loginEmail" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword" class="form-label block">Password</label>
+                    <div class="password-toggle">
+                        <input type="password" class="form-control w-full" id="loginPassword" placeholder="Enter your password" required>
+                        <button type="button" class="password-toggle-btn" onclick="togglePassword('loginPassword')">
+                            <i class="fas fa-eye" id="loginPasswordIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-check flex items-center">
+                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">
+                        Remember me
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-primary-custom">
+                    Sign In
+                </button>
+            </form>
+
+            <div class="text-center mt-3">
+                <p style="color: var(--text-light); opacity: 0.8;">
+                    Don't have an account? 
+                    <a href="#" class="auth-link" onclick="showSignup()">Sign up here</a>
+                </p>
+                <a href="#" class="auth-link" style="font-size: 0.9rem;">Forgot your password?</a>
+            </div>
+        </div>
+
+       
+        <div class="auth-card hidden" id="signupForm">
+            <div class="auth-header">
+                <h1 class="auth-title">Join Safari Adventures</h1>
+                <p class="auth-subtitle">Create your account to start booking</p>
+            </div>
+
+            
+            <button class="btn-google" onclick="signUpWithGoogle()">
+                <svg class="google-icon" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Sign up with Google
+            </button>
+
+            <div class="divider">
+                <span>or</span>
+            </div>
+
+            <form id="signupFormData">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label for="firstName" class="form-label block">First Name</label>
+                        <input type="text" class="form-control w-full" id="firstName" placeholder="First name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName" class="form-label block">Last Name</label>
+                        <input type="text" class="form-control w-full" id="lastName" placeholder="Last name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="signupEmail" class="form-label block">Email Address</label>
+                    <input type="email" class="form-control w-full" id="signupEmail" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phoneNumber" class="form-label block">Phone Number</label>
+                    <input type="tel" class="form-control w-full" id="phoneNumber" placeholder="+1 (555) 123-4567" required>
+                </div>
+
+               <div class="form-group">
+                    <label for="country" class="form-label block">Country</label>
+                    <select class="form-control w-full" id="country" required>
+                        <option value="">Select your country</option>
+                        <option value="US">🇺🇸 United States</option>
+                        <option value="UK">🇬🇧 United Kingdom</option>
+                        <option value="CA">🇨🇦 Canada</option>
+                        <option value="AU">🇦🇺 Australia</option>
+                        <option value="DE">🇩🇪 Germany</option>
+                        <option value="FR">🇫🇷 France</option>
+                        <option value="IT">🇮🇹 Italy</option>
+                        <option value="ES">🇪🇸 Spain</option>
+                        <option value="JP">🇯🇵 Japan</option>
+                        <option value="KR">🇰🇷 South Korea</option>
+                        <option value="CN">🇨🇳 China</option>
+                        <option value="IN">🇮🇳 India</option>
+                        <option value="BR">🇧🇷 Brazil</option>
+                        <option value="MX">🇲🇽 Mexico</option>
+                        <option value="ZA">🇿🇦 South Africa</option>
+                        <option value="KE">🇰🇪 Kenya</option>
+                        <option value="TZ">🇹🇿 Tanzania</option>
+                        <option value="other">🌍 Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="signupPassword" class="form-label block">Password</label>
+                    <div class="password-toggle">
+                        <input type="password" class="form-control w-full" id="signupPassword" placeholder="Create a password" required minlength="8">
+                        <button type="button" class="password-toggle-btn" onclick="togglePassword('signupPassword')">
+                            <i class="fas fa-eye" id="signupPasswordIcon"></i>
+                        </button>
+                    </div>
+                    <small style="color: var(--text-light); opacity: 0.7;">Minimum 8 characters</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label block">Confirm Password</label>
+                    <div class="password-toggle">
+                        <input type="password" class="form-control w-full" id="confirmPassword" placeholder="Confirm your password" required>
+                        <button type="button" class="password-toggle-btn" onclick="togglePassword('confirmPassword')">
+                            <i class="fas fa-eye" id="confirmPasswordIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-check flex items-start">
+                    <input class="form-check-input mt-1" type="checkbox" id="agreeTerms" required>
+                    <label class="form-check-label ml-2" for="agreeTerms">
+                        I agree to the <a href="#" class="auth-link">Terms of Service</a> and <a href="#" class="auth-link">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <div class="form-check flex items-start">
+                    <input class="form-check-input mt-1" type="checkbox" id="newsletter">
+                    <label class="form-check-label ml-2" for="newsletter">
+                        Send me updates about new safari packages and special offers
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-primary-custom">
+                    Create Account
+                </button>
+            </form>
+
+            <div class="text-center mt-3">
+                <p style="color: var(--text-light); opacity: 0.8;">
+                    Already have an account? 
+                    <a href="#" class="auth-link" onclick="showLogin()">Sign in here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        
+        function showSignup() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').classList.remove('hidden');
+        }
+
+        function showLogin() {
+            document.getElementById('signupForm').classList.add('hidden');
+            document.getElementById('loginForm').style.display = 'block';
+        }
+
+      
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(inputId + 'Icon');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+       
+        document.getElementById('loginFormData').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+          
+            submitBtn.classList.add('btn-loading');
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+               
+                submitBtn.classList.remove('btn-loading');
+                submitBtn.disabled = false;
+                
+                
+                showMessage('Login successful! Redirecting...', 'success');
+                
+               
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            }, 2000);
+        });
+
+        document.getElementById('signupFormData').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                showMessage('Passwords do not match!', 'error');
+                return;
+            }
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+          
+            submitBtn.classList.add('btn-loading');
+            submitBtn.disabled = true;
+            
+            
+            setTimeout(() => {
+                
+                submitBtn.classList.remove('btn-loading');
+                submitBtn.disabled = false;
+                
+                
+                showMessage('Account created successfully! Please check your email for verification.', 'success');
+                
+                setTimeout(() => {
+                    showLogin();
+                }, 2000);
+            }, 2000);
+        });
+
+       
+        function signInWithGoogle() {
+            // This would integrate with Google Sign-In API
+            showMessage('Google Sign-In clicked! (Integration required)', 'success');
+            console.log('Google Sign-In initiated');
+            
+            // Example of how you'd integrate with Google Sign-In:
+            /*
+            google.accounts.id.initialize({
+                client_id: 'YOUR_GOOGLE_CLIENT_ID',
+                callback: handleGoogleSignIn
+            });
+            google.accounts.id.prompt();
+            */
+        }
+
+        function signUpWithGoogle() {
+            
+            showMessage('Google Sign-Up clicked! (Integration required)', 'success');
+            console.log('Google Sign-Up initiated');
+        }
+
+        function handleGoogleSignIn(response) {
+            
+            console.log('Google Sign-In response:', response);
+            
+        }
+
+        
+        function showMessage(message, type) {
+            
+            const existingAlert = document.querySelector('.alert-custom');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert-custom alert-${type === 'error' ? 'danger' : 'success'}`;
+            alertDiv.textContent = message;
+            
+            const activeForm = document.getElementById('loginForm').style.display !== 'none' 
+                ? document.getElementById('loginForm') 
+                : document.getElementById('signupForm');
+            
+            activeForm.insertBefore(alertDiv, activeForm.querySelector('form'));
+            
+           
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        
+        document.getElementById('phoneNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            let formattedValue = '';
+            
+            if (value.length > 0) {
+                if (value.length <= 3) {
+                    formattedValue = value;
+                } else if (value.length <= 6) {
+                    formattedValue = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+                } else {
+                    formattedValue = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+                }
+                
+                if (value.length > 10) {
+                    formattedValue = `+${value.slice(0, -10)} ${formattedValue}`;
+                }
+            }
+            
+            e.target.value = formattedValue;
+        });
+
+      
+        document.getElementById('signupPassword').addEventListener('input', function(e) {
+            const password = e.target.value;
+            const requirements = {
+                length: password.length >= 8,
+                number: /\d/.test(password),
+                lowercase: /[a-z]/.test(password),
+                uppercase: /[A-Z]/.test(password)
+            };
+            
+            
+        });
+    </script>
+</body>
+</html>

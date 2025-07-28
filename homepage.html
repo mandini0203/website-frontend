@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crusoe Safari - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-green': '#123332',
+                        'dark-green': '#12271c',
+                        'accent-orange': '#84a972',
+                        'light-cream': '#f0f5f0',
+                        'text-light': '#E8E6E3',
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-green: #123332;
+            --dark-green: #12271c;
+            --accent-orange: #84a972;
+            --light-cream: #f0f5f0;
+            --text-light: #E8E6E3;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Quattrocento", serif;
+            font-weight: 400;
+            font-style: normal;
+            background:url(img/bg10.png);
+            background-size: cover;
+            background-attachment: fixed;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: transparent !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(132, 169, 114, 0.2);
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text-light) !important;
+        }
+        
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            margin: 0 2rem;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 40px;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-orange) !important;
+        }
+        
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--accent-orange);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: 2rem;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(132, 169, 114, 0.3);
+        }
+        
+        /* Hero Slider Section */
+        .hero-slider {
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        
+        .slider-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            z-index: 1;
+        }
+        
+        .slider-background.active {
+            opacity: 1;
+        }
+        
+        
+        .slider-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+             margin-left: 40px;
+            margin-right: 40px;
+        }
+        
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            margin-left: 40px;
+            margin-right: 40px;
+            color: var(--light-cream);
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+            line-height: 1.2;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease-out;
+        }
+        
+        .hero-title.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .hero-description {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            color: var(--text-light);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease-out 0.3s;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero-description.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        
+        .wildlife-tags {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease-out 0.6s;
+        }
+
+        .wildlife-tags.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .wildlife-tag {
+            background: rgba(132, 169, 114, 0.2);
+            color: var(--accent-orange);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid rgba(132, 169, 114, 0.3);
+        }
+        
+        
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease-out 0.9s;
+        }
+
+        .hero-actions.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .btn-primary {
+            background: var(--accent-orange);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary:hover {
+            background: #6d8a5e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(132, 169, 114, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-orange);
+            border: 2px solid var(--accent-orange);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--accent-orange);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        
+        .slider-nav {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 10;
+        }
+        
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-dot.active {
+            background: var(--accent-orange);
+            transform: scale(1.2);
+        }
+        
+        
+        .wildlife-sidebar {
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            background: rgba(18, 51, 50, 0.9);
+            padding: 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(132, 169, 114, 0.3);
+            max-width: 300px;
+            opacity: 0;
+            transform: translateX(50px) translateY(-50%);
+            transition: all 1s ease-out 1.2s;
+        }
+
+        .wildlife-sidebar.active {
+            opacity: 1;
+            transform: translateX(0) translateY(-50%);
+        }
+        
+        .sidebar-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+            line-height: 1;
+        }
+        
+        .sidebar-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .sidebar-info {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        
+        .social-links {
+            position: absolute;
+            left: 2rem;
+            bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 10;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(18, 51, 50, 0.8);
+            border: 1px solid rgba(132, 169, 114, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-orange);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--accent-orange);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        #activities {
+            background: url(bg10.png) !important;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        
+        .activity-card {
+            background: rgba(18, 51, 50, 0.9);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(132, 169, 114, 0.2);
+            backdrop-filter: blur(10px);
+            height: 100%;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-orange);
+        }
+
+        .activity-image {
+            position: relative;
+            overflow: hidden;
+            height: 200px;
+        }
+
+        .activity-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .activity-card:hover .activity-image img {
+            transform: scale(1.1);
+        }
+
+        .activity-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(18, 51, 50, 0.8), rgba(132, 169, 114, 0.6));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .activity-card:hover .activity-overlay {
+            opacity: 1;
+        }
+
+        .activity-content {
+            padding: 2rem;
+        }
+
+        .activity-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light-cream);
+            margin-bottom: 1rem;
+        }
+
+        .activity-description {
+            color: var(--text-light);
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .activity-btn {
+            color: var(--accent-orange);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .activity-btn:hover {
+            border-bottom-color: var(--accent-orange);
+            transform: translateX(5px);
+        }
+
+        
+        .footer-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--light-cream);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            opacity: 0.8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-orange);
+            opacity: 1;
+            transform: translateX(5px);
+        }
+
+        .footer-social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(132, 169, 114, 0.2);
+            border: 1px solid rgba(132, 169, 114, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-orange);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social-link:hover {
+            background: var(--accent-orange);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(132, 169, 114, 0.3);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            opacity: 0.9;
+        }
+
+        .contact-item i {
+            color: var(--accent-orange);
+            width: 20px;
+            margin-top: 2px;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: rgba(245, 243, 240, 0.1);
+            border: 2px solid rgba(132, 169, 114, 0.3);
+            border-radius: 8px 0 0 8px;
+            color: var(--text-light);
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .newsletter-input:focus {
+            border-color: var(--accent-orange);
+        }
+
+        .newsletter-input::placeholder {
+            color: rgba(232, 230, 227, 0.6);
+        }
+
+        .newsletter-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--accent-orange);
+            color: white;
+            border: none;
+            border-radius: 0 8px 8px 0;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .newsletter-btn:hover {
+            background: #6d8a5e;
+            transform: translateY(-2px);
+        }
+        
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-description {
+                font-size: 1.1rem;
+            }
+            
+            .wildlife-sidebar {
+                position: static;
+                transform: none;
+                margin-top: 2rem;
+                max-width: 100%;
+            }
+
+            .wildlife-sidebar.active {
+                transform: none;
+            }
+            
+            .hero-actions {
+                flex-direction: column;
+            }
+
+            .social-links {
+                flex-direction: row;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: 1rem;
+            }
+
+            .wildlife-tags {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    
+    <nav class="navbar fixed top-0 w-full z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <a class="navbar-brand" href="#home">
+                    <img src="img/logo.png" class="w-44 h-20" alt="Crusoe Safari">
+                </a>
+                
+                <button class="lg:hidden text-text-light" onclick="toggleMobileMenu()">
+                    <span class="block w-6 h-0.5 bg-current mb-1"></span>
+                    <span class="block w-6 h-0.5 bg-current mb-1"></span>
+                    <span class="block w-6 h-0.5 bg-current"></span>
+                </button>
+                
+                <div class="hidden lg:flex items-center">
+                    <ul class="navbar-nav">
+                        <li><a class="nav-link" href="#home">Home</a></li>
+                        <li><a class="nav-link" href="#bookings">Bookings</a></li>
+                        <li><a class="nav-link" href="#activities">Activities</a></li>
+                        <li><a class="nav-link" href="gallery.html">Gallery</a></li>
+                        <li><a class="nav-link" href="#about">About</a></li>
+                    </ul>
+                    
+                    
+                    <div class="user-profile">
+                        <div class="profile-avatar" onclick="toggleProfileMenu()">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div id="navbarNav" class="hidden absolute top-full left-0 w-full bg-primary-green lg:hidden">
+                    <ul class="navbar-nav flex flex-col">
+                        <li><a class="nav-link block px-4 py-3" href="#home">Home</a></li>
+                        <li><a class="nav-link block px-4 py-3" href="#activities">Activities</a></li>
+                        <li><a class="nav-link block px-4 py-3" href="gallery.html">Gallery</a></li>
+                        <li><a class="nav-link block px-4 py-3" href="#about">About</a></li>
+                        <li><a class="nav-link block px-4 py-3" href="#profile">Profile</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+   
+    <section id="home" class="hero-slider">
+        
+        <div class="slider-background active" style="background-image: url('img/bgh1.png');" data-slide="0"></div>
+        <div class="slider-background" style="background-image: url('img/bgh2.png');" data-slide="1"></div>
+        <div class="slider-background" style="background-image: url('img/camp.png');" data-slide="2"></div>
+        <div class="slider-background" style="background-image: url('img/boat.png');" data-slide="3"></div>
+        
+        <div class="container mx-auto px-4 h-full flex items-center">
+            <div class="hero-content">
+                
+                <h1 class="hero-title active" id="heroTitle">ADVENTURE IN THE FOREST</h1>
+                
+               
+                <div class="wildlife-tags active" id="wildlifeTags">
+                    <span class="wildlife-tag">Leopards</span>
+                    <span class="wildlife-tag">Elephants</span>
+                    <span class="wildlife-tag">Birds</span>
+                </div>
+                
+                
+                <p class="hero-description active" id="heroDescription">
+                    Experience the thrill of spotting majestic leopards in their natural habitat. Our expert guides will take you through dense forests where these magnificent cats roam freely.
+                </p>
+                
+               
+                <div class="hero-actions active">
+                    <a href="#activities" class="btn-primary">
+                        <i class="fas fa-camera"></i>
+                        Explore Activities
+                    </a>
+                    <a href="#book" class="btn-secondary">Book Now</a>
+                </div>
+            </div>
+        </div>
+        
+      
+        <div class="wildlife-sidebar active" id="wildlifeSidebar">
+            <div class="sidebar-number" id="sidebarNumber">01</div>
+            <div class="sidebar-label">Current Wildlife</div>
+            <div class="sidebar-info" id="sidebarInfo">
+                Sri Lankan Leopard - The apex predator of our forests, known for their incredible stealth and hunting prowess.
+            </div>
+        </div>
+        
+       
+        <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+        </div>
+        
+       
+        <div class="slider-nav">
+            <div class="nav-dot active" data-slide="0"></div>
+            <div class="nav-dot" data-slide="1"></div>
+            <div class="nav-dot" data-slide="2"></div>
+            <div class="nav-dot" data-slide="3"></div>
+        </div>
+    </section>
+
+   
+    <section id="activities" class="py-24">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold mb-6" style="color: var(--light-cream);">Safari Activities</h2>
+                <p class="text-xl opacity-90 max-w-3xl mx-auto" style="color: var(--text-light);">
+                    Discover the wild side of Sri Lanka with our carefully curated safari experiences. Each adventure offers unique encounters with nature's magnificent creatures.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+               
+                <div class="activity-card">
+                    <div class="activity-image">
+                        <img src="img/bg3.jpg" alt="Safari Tours" class="w-full h-48 object-cover">
+                        <div class="activity-overlay">
+                            <i class="fas fa-binoculars text-4xl" style="color: var(--accent-orange);"></i>
+                        </div>
+                    </div>
+                    <div class="activity-content">
+                        <h3 class="activity-title">Safari Tours</h3>
+                        <p class="activity-description">
+                            Embark on guided wildlife tours through pristine national parks. Spot leopards, elephants, and exotic birds in their natural habitat with expert naturalists.
+                        </p>
+                        <a href="tours.html" class="activity-btn">
+                            Explore Tours <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+               
+                <div class="activity-card">
+                    <div class="activity-image">
+                        <img src="img/gamedrive.jpg" alt="Safari Game Drives" class="w-full h-48 object-cover">
+                        <div class="activity-overlay">
+                            <i class="fas fa-truck text-4xl" style="color: var(--accent-orange);"></i>
+                        </div>
+                    </div>
+                    <div class="activity-content">
+                        <h3 class="activity-title">Safari Game Drives</h3>
+                        <p class="activity-description">
+                            Experience thrilling game drives in specially equipped vehicles. Navigate through diverse terrains and witness wildlife behavior up close.
+                        </p>
+                        <a href="tours.html" class="activity-btn">
+                            Book Now <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+              
+                <div class="activity-card">
+                    <div class="activity-image">
+                        <img src="img/boat.png" alt="Boat Safari" class="w-full h-48 object-cover">
+                        <div class="activity-overlay">
+                            <i class="fas fa-ship text-4xl" style="color: var(--accent-orange);"></i>
+                        </div>
+                    </div>
+                    <div class="activity-content">
+                        <h3 class="activity-title">Boat Now</h3>
+                        <p class="activity-description">
+                            Navigate serene waterways and mangrove forests. Discover aquatic wildlife, crocodiles, and water birds in peaceful river ecosystems.
+                        </p>
+                        <a href="tours.html" class="activity-btn">
+                            Book Now <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+               
+                <div class="activity-card">
+                    <div class="activity-image">
+                        <img src="img/nightd.jpg" alt="Safari Night Drives" class="w-full h-48 object-cover">
+                        <div class="activity-overlay">
+                            <i class="fas fa-moon text-4xl" style="color: var(--accent-orange);"></i>
+                        </div>
+                    </div>
+                    <div class="activity-content">
+                        <h3 class="activity-title">Safari Night Drives</h3>
+                        <p class="activity-description">
+                            Experience the mysterious world of nocturnal wildlife. Spot elusive creatures that come alive after dark with specialized night vision equipment.
+                        </p>
+                        <a href="tours.html" class="activity-btn">
+                            Book Now <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <footer style="background-color: var(--primary-green); border-top: 1px solid rgba(132, 169, 114, 0.2);">
+        <div class="container mx-auto px-4 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+                <div class="footer-section">
+                    <div class="mb-6">
+                        <img src="img/logo.png" alt="Crusoe Safari" class="w-40 h-20">
+                    </div>
+                    <p class="opacity-80 mb-6 leading-relaxed" style="color: var(--text-light);">
+                        Experience the ultimate Sri Lankan wildlife adventure with Crusoe Safari. We provide authentic, sustainable wildlife experiences that connect you with nature.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="footer-social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="footer-social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="footer-social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="footer-social-link">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                
+                <div class="footer-section">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#booking">Book Safari</a></li>
+                    </ul>
+                </div>
+                
+                
+                <div class="footer-section">
+                    <h3 class="footer-title">Safari Activities</h3>
+                    <ul class="footer-links">
+                        <li><a href="#tours">Safari Tours</a></li>
+                        <li><a href="#drives">Game Drives</a></li>
+                        <li><a href="#boat">Boat Safari</a></li>
+                        <li><a href="#night">Night Drives</a></li>
+                        <li><a href="#camping">Safari Camping</a></li>
+                        <li><a href="#photography">Wildlife Photography</a></li>
+                    </ul>
+                </div>
+                
+            
+                <div class="footer-section">
+                    <h3 class="footer-title">Contact Info</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Safari Avenue<br>Colombo, Sri Lanka</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+94 11 234 5678</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@crusoesafari.lk</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <span>24/7 Support Available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div style="border-top: 1px solid rgba(132, 169, 114, 0.2); margin-top: 3rem; padding-top: 2rem;">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="mb-4 md:mb-0">
+                        <h4 class="font-semibold text-lg mb-2" style="color: var(--light-cream);">Stay Updated</h4>
+                        <p class="opacity-80" style="color: var(--text-light);">Get the latest wildlife updates and exclusive safari offers</p>
+                    </div>
+                    <div class="flex w-full md:w-auto">
+                        <input type="email" placeholder="Enter your email" class="newsletter-input">
+                        <button class="newsletter-btn">
+                            Subscribe <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div style="background-color: var(--dark-green); border-top: 1px solid rgba(132, 169, 114, 0.1); padding: 1.5rem 0;">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row items-center justify-between opacity-70" style="color: var(--text-light);">
+                    <p>&copy; 2024 Crusoe Safari. All rights reserved.</p>
+                    <div class="flex space-x-6 mt-4 md:mt-0">
+                        <a href="#privacy" class="hover:text-accent-orange transition-colors">Privacy Policy</a>
+                        <a href="#terms" class="hover:text-accent-orange transition-colors">Terms of Service</a>
+                        <a href="#cookies" class="hover:text-accent-orange transition-colors">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        
+        const slideData = [
+            {
+                title: "ADVENTURE IN THE FOREST",
+                description: "Experience the thrill of spotting majestic leopards in their natural habitat. Our expert guides will take you through dense forests where these magnificent cats roam freely.",
+                tags: ["Leopards", "Elephants", "Birds"],
+                sidebarNumber: "01",
+                sidebarInfo: "Sri Lankan Leopard - The apex predator of our forests, known for their incredible stealth and hunting prowess."
+            },
+            {
+                title: "WILDLIFE TOURS",
+                description: "Embark on unforgettable wildlife tours with our expert guides, immersing yourself in the beauty of nature.",
+                tags: ["Elephants", "Herds", "Nature"],
+                sidebarNumber: "02",
+                sidebarInfo: "Asian Elephant - Intelligent herbivores that play a crucial role in maintaining forest ecosystems."
+            },
+            {
+                title: "SAFARI CAMPS",
+                description: "Indulge in an unforgettable wilderness experience with our Safari Camps.",
+                tags: ["Birds", "Endemic", "Colors"],
+                sidebarNumber: "03",
+                sidebarInfo: "Endemic Birds - Over 240 bird species call Sri Lankan forests home, with 34 being endemic to the island."
+            },
+            {
+                title: "BOAT SAFARI",
+                description: "Boat safaris offer immersive wildlife experiences, navigating through rivers and waterways to observe diverse ecosystems and animal species up close.",
+                tags: ["Bears", "Deer", "Ecosystem"],
+                sidebarNumber: "04",
+                sidebarInfo: "Forest Ecosystem - A delicate balance of flora and fauna that has existed for thousands of years."
+            }
+        ];
+
+        let currentSlide = 0;
+        let isTransitioning = false;
+        const totalSlides = slideData.length;
+        const slideInterval = 6000;
+
+        
+        function nextSlide() {
+            if (isTransitioning) return;
+            
+            isTransitioning = true;
+            const nextSlideIndex = (currentSlide + 1) % totalSlides;
+            goToSlide(nextSlideIndex);
+        }
+
+        function goToSlide(slideIndex) {
+            if (slideIndex === currentSlide) return;
+            
+            
+            hideContent();
+            
+         
+            setTimeout(() => {
+                updateBackground(slideIndex);
+                updateContent(slideIndex);
+                showContent();
+                updateNavDots(slideIndex);
+                currentSlide = slideIndex;
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function hideContent() {
+            document.getElementById('heroTitle').classList.remove('active');
+            document.getElementById('heroDescription').classList.remove('active');
+            document.getElementById('wildlifeTags').classList.remove('active');
+            document.querySelector('.hero-actions').classList.remove('active');
+            document.getElementById('wildlifeSidebar').classList.remove('active');
+        }
+
+        function showContent() {
+            setTimeout(() => {
+                document.getElementById('heroTitle').classList.add('active');
+                document.getElementById('heroDescription').classList.add('active');
+                document.getElementById('wildlifeTags').classList.add('active');
+                document.querySelector('.hero-actions').classList.add('active');
+                document.getElementById('wildlifeSidebar').classList.add('active');
+            }, 200);
+        }
+
+        function updateBackground(slideIndex) {
+            document.querySelectorAll('.slider-background').forEach((bg, index) => {
+                bg.classList.toggle('active', index === slideIndex);
+            });
+        }
+
+        function updateContent(slideIndex) {
+            const data = slideData[slideIndex];
+            
+            
+            document.getElementById('heroTitle').textContent = data.title;
+            
+         
+            document.getElementById('heroDescription').textContent = data.description;
+            
+         
+            const tagsContainer = document.getElementById('wildlifeTags');
+            tagsContainer.innerHTML = data.tags.map(tag => 
+                `<span class="wildlife-tag">${tag}</span>`
+            ).join('');
+            
+         
+            document.getElementById('sidebarNumber').textContent = data.sidebarNumber;
+            document.getElementById('sidebarInfo').textContent = data.sidebarInfo;
+        }
+
+        function updateNavDots(slideIndex) {
+            document.querySelectorAll('.nav-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === slideIndex);
+            });
+        }
+
+        
+        document.querySelectorAll('.nav-dot').forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                if (!isTransitioning) {
+                    goToSlide(index);
+                }
+            });
+        });
+
+       
+        setInterval(nextSlide, slideInterval);
+
+       
+        function toggleMobileMenu() {
+            const navbar = document.getElementById('navbarNav');
+            navbar.classList.toggle('hidden');
+        }
+
+        
+        function toggleProfileMenu() {
+            
+            console.log('Profile menu clicked');
+        }
+
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                const prevSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                goToSlide(prevSlide);
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+            }
+        });
+
+        
+        const heroSection = document.querySelector('.hero-slider');
+        let autoSlideInterval = setInterval(nextSlide, slideInterval);
+
+        heroSection.addEventListener('mouseenter', () => {
+            clearInterval(autoSlideInterval);
+        });
+
+        heroSection.addEventListener('mouseleave', () => {
+            autoSlideInterval = setInterval(nextSlide, slideInterval);
+        });
+
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+       
+        document.querySelector('.newsletter-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const email = document.querySelector('.newsletter-input').value;
+            if (email) {
+                alert('Thank you for subscribing! You will receive updates about our safari adventures.');
+                document.querySelector('.newsletter-input').value = '';
+            } else {
+                alert('Please enter a valid email address.');
+            }
+        });
+
+      
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(18, 39, 28, 0.98)';
+            } else {
+                navbar.style.background = 'rgba(18, 39, 28, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>

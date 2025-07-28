@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crusoe Safari - Tours</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-green': '#123332',
+                        'dark-green': '#12271c',
+                        'accent-orange': '#84a972',
+                        'light-cream': '#f0f5f0',
+                        'text-light': '#E8E6E3',
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-green: #123332;
+            --dark-green: #12271c;
+            --accent-orange: #84a972;
+            --light-cream: #f0f5f0;
+            --text-light: #E8E6E3;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Quattrocento", serif;
+            font-weight: 400;
+            font-style: normal;
+            background: linear-gradient(110deg, rgba(21, 39, 30, 0.95), rgba(18, 39, 28, 0.9)), url('img/bg10.png');
+            background-size: cover;
+            background-attachment: fixed;
+            color: var(--text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+       
+        .navbar {
+            background: transparent;
+            backdrop-filter: blur(20px) !important;
+            border-bottom: 1px solid rgba(132, 169, 114, 0.2);
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text-light) !important;
+        }
+        
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            margin: 0 2rem;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 40px;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-orange) !important;
+        }
+        
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--accent-orange);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .navbar-nav .nav-link.active {
+            color: var(--accent-orange) !important;
+        }
+
+        .navbar-nav .nav-link.active::after {
+            width: 100%;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: 2rem;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(132, 169, 114, 0.3);
+        }
+
+        .page-header {
+            padding: 150px 0 100px 0;
+            text-align: center;
+            background:linear-gradient(135deg, rgba(48, 43, 44, 0.556), rgba(18, 39, 28, 0.9)),url(img/bg3.jpg);
+            
+        }
+
+        .page-title {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--light-cream);
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .forest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .forest-card {
+            background: rgba(18, 51, 50, 0.9);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            border: 2px solid rgba(132, 169, 114, 0.2);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .forest-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-orange);
+        }
+
+        .forest-card.selected {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 20px rgba(132, 169, 114, 0.5);
+        }
+
+        .forest-image {
+            position: relative;
+            overflow: hidden;
+            height: 200px;
+        }
+
+        .forest-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .forest-card:hover .forest-image img {
+            transform: scale(1.1);
+        }
+
+        .forest-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(18, 51, 50, 0.6), rgba(132, 169, 114, 0.4));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .forest-card:hover .forest-overlay {
+            opacity: 1;
+        }
+
+        .forest-content {
+            padding: 2rem;
+        }
+
+        .forest-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light-cream);
+            margin-bottom: 1rem;
+        }
+
+        .forest-location {
+            color: var(--accent-orange);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .forest-description {
+            color: var(--text-light);
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .forest-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .feature-tag {
+            background: rgba(132, 169, 114, 0.2);
+            color: var(--accent-orange);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid rgba(132, 169, 114, 0.3);
+        }
+
+        .packages-section {
+            display: none;
+            margin-top: 4rem;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(132, 169, 114, 0.3);
+        }
+
+        .packages-section.active {
+            display: block;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .selected-forest-info {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .selected-forest-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--light-cream);
+            margin-bottom: 1rem;
+        }
+
+        .selected-forest-description {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .package-card {
+            background: rgba(18, 51, 50, 0.95);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(132, 169, 114, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .package-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-orange);
+        }
+
+        .package-header {
+            background: linear-gradient(135deg, var(--accent-orange), #6d8a5e);
+            padding: 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .package-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .package-duration {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .package-content {
+            padding: 2rem;
+        }
+
+        .package-price {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .price-amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+        }
+
+        .price-currency {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            opacity: 0.7;
+        }
+
+        .package-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .package-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(132, 169, 114, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .package-features li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            color: var(--accent-orange);
+            width: 16px;
+        }
+
+        .btn-book {
+            width: 100%;
+            background: var(--accent-orange);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-book:hover {
+            background: #6d8a5e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(132, 169, 114, 0.3);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: #e74c3c;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        
+        .back-button {
+            background: rgba(132, 169, 114, 0.2);
+            color: var(--accent-orange);
+            border: 2px solid var(--accent-orange);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .back-button:hover {
+            background: var(--accent-orange);
+            color: white;
+            transform: translateX(-3px);
+        }
+
+
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--accent-orange);
+        }
+
+        .loading i {
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+  
+    <nav class="navbar fixed top-0 w-full z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <a class="navbar-brand" href="homepage.html">
+                    <img src="img/logo.png" class="w-44 h-20" alt="Crusoe Safari">
+                </a>
+                
+                <button class="lg:hidden text-text-light" onclick="toggleMobileMenu()">
+                    <span class="block w-6 h-0.5 bg-current mb-1"></span>
+                    <span class="block w-6 h-0.5 bg-current mb-1"></span>
+                    <span class="block w-6 h-0.5 bg-current"></span>
+                </button>
+                
+                <div class="hidden lg:flex items-center">
+                    <ul class="navbar-nav">
+                        <li><a class="nav-link" href="homepage.html">Home</a></li>
+                        <li><a class="nav-link" href="#bookings">Bookings</a></li>
+                        <li><a class="nav-link active" href="#tours">Tours</a></li>
+                        <li><a class="nav-link" href="#gallery">Gallery</a></li>
+                        <li><a class="nav-link" href="#about">About</a></li>
+                    </ul>
+                    
+                 
+                    <div class="user-profile">
+                        <div class="profile-avatar" onclick="toggleProfileMenu()">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+               
+                <div id="navbarNav" class="hidden absolute top-full left-0 w-full bg-primary-green lg:hidden">
+                    <ul class="navbar-nav flex flex-col">
+                        <li><a class="nav-link block px-4 py-3" href="homepage.html">Home</a></li>
+                        <li><a class="nav-link block px-4 py-3" href="#bookings">Bookings</a></li>
+                        <li><a class="nav-link active block px-4 py-3" href="#tours">Tours</a></li>
+                        <li><a class="nav-link block px-4 py-3" href="gallery.html">Gallery</a></li>
+                        <li><a class="nav-link block px-4 py-3" href="#about">About</a></li>
+                        <li><a class="nav-link block px-4 py-3" href="#profile">Profile</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+   
+    <div class="page-header">
+        <div class="container mx-auto px-4">
+            <h1 class="page-title">Safari Tours</h1>
+            <p class="page-subtitle">
+                Discover the magnificent wildlife of Sri Lanka's pristine forests. Choose your preferred destination and embark on an unforgettable safari adventure.
+            </p>
+        </div>
+    </div>
+
+    
+    <div class="container mx-auto px-4 py-16">
+        <div id="forestSelection">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4" style="color: var(--light-cream);">Choose Your Safari Destination</h2>
+                <p class="text-lg opacity-90" style="color: var(--text-light);">
+                    Select from Sri Lanka's most renowned national parks and wildlife reserves
+                </p>
+            </div>
+
+            <div class="forest-grid">
+                <div class="forest-card" data-forest="yala">
+                    <div class="forest-image">
+                        <img src="img/yala.jpg" alt="Yala National Park">
+                        <div class="forest-overlay">
+                            <i class="fas fa-paw text-4xl" style="color: var(--accent-orange);"></i>
+                        </div>
+                    </div>
+                    <div class="forest-content">
+                        <h3 class="forest-title">Yala National Park</h3>
+                        <div class="forest-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Southern Province, Sri Lanka
+                        </div>
+                        <p class="forest-description">
+                            Famous for having one of the highest leopard densities in the world. Home to elephants, sloth bears, and over 200 bird species in diverse ecosystems.
+                        </p>
+                        <div class="forest-features">
+                            <span class="feature-tag">Leopards</span>
+                            <span class="feature-tag">Elephants</span>
+                            <span class="feature-tag">Bears</span>
+                            <span class="feature-tag">215 Bird Species</span>
+                        </div>
+                    </div>
+                </div>
+
+               
+                <div class="forest-card" data-forest="udawalawe">
+                    <div class="forest-image">
+                        <img src="img/udawalawe.avif" alt="Udawalawe National Park">
+                        <div class="forest-overlay">
+                            <i class="fas fa-tree text-4xl" style="color: var(--accent-orange);"></i>
+                        </div>
+                    </div>
+                    <div class="forest-content">
+                        <h3 class="forest-title">Udawalawe National Park</h3>
+                        <div class="forest-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Sabaragamuwa Province, Sri Lanka
+                        </div>
+                        <p class="forest-description">
+                            Renowned for its large herds of elephants and open grassland habitat. Perfect for wildlife photography with excellent visibility and diverse wildlife.
+                        </p>
+                        <div class="forest-features">
+                            <span class="feature-tag">Elephant Herds</span>
+                            <span class="feature-tag">Water Buffalo</span>
+                            <span class="feature-tag">Crocodiles</span>
+                            <span class="feature-tag">Open Grasslands</span>
+                        </div>
+                    </div>
+                </div>
+
+              
+                <div class="forest-card" data-forest="minneriya">
+                    <div class="forest-image">
+                        <img src="img/minneriya.jpg" alt="Minneriya National Park">
+                        <div class="forest-overlay">
+                            <i class="fas fa-water text-4xl" style="color: var(--accent-orange);"></i>
+                        </div>
+                    </div>
+                    <div class="forest-content">
+                        <h3 class="forest-title">Minneriya National Park</h3>
+                        <div class="forest-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            North Central Province, Sri Lanka
+                        </div>
+                        <p class="forest-description">
+                            Famous for "The Gathering" - the largest meeting of Asian elephants in the world. Centered around the ancient Minneriya Tank built in 3rd century.
+                        </p>
+                        <div class="forest-features">
+                            <span class="feature-tag">The Gathering</span>
+                            <span class="feature-tag">Ancient Tank</span>
+                            <span class="feature-tag">Migratory Birds</span>
+                            <span class="feature-tag">Wetlands</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="forest-card" data-forest="wilpattu">
+                    <div class="forest-image">
+                        <img src="img/wilpattu.jpg" alt="Wilpattu National Park">
+                        <div class="forest-overlay">
+                            <i class="fas fa-moon text-4xl" style="color: var(--accent-orange);"></i>
+                        </div>
+                    </div>
+                    <div class="forest-content">
+                        <h3 class="forest-title">Wilpattu National Park</h3>
+                        <div class="forest-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            North Western Province, Sri Lanka
+                        </div>
+                        <p class="forest-description">
+                            Sri Lanka's largest national park, known for its unique "Willus" (natural lakes) and dense forest. Prime leopard territory with pristine wilderness.
+                        </p>
+                        <div class="forest-features">
+                            <span class="feature-tag">Natural Lakes</span>
+                            <span class="feature-tag">Dense Forest</span>
+                            <span class="feature-tag">Leopard Territory</span>
+                            <span class="feature-tag">Pristine Wilderness</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="packagesSection" class="packages-section">
+            <a href="#" class="back-button" onclick="showForestSelection()">
+                <i class="fas fa-arrow-left"></i>
+                Back to Forest Selection
+            </a>
+
+            <div class="selected-forest-info">
+                <h2 class="selected-forest-title" id="selectedForestTitle"></h2>
+                <p class="selected-forest-description" id="selectedForestDescription"></p>
+            </div>
+
+            <div class="text-center mb-8">
+                <h3 class="text-2xl font-bold mb-4" style="color: var(--light-cream);">Available Tour Packages</h3>
+                <p class="text-lg opacity-90" style="color: var(--text-light);">
+                    Choose from our carefully designed safari packages tailored to different preferences and timeframes
+                </p>
+            </div>
+
+            <div class="packages-grid" id="packagesGrid">
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        const forestData = {
+            yala: {
+                title: "Yala National Park",
+                description: "Yala National Park, located in the southeast region of Sri Lanka, is the country's most visited and second-largest national park. Known for having one of the highest leopard densities in the world, Yala offers exceptional wildlife viewing opportunities across its diverse ecosystems including forests, grasslands, and lagoons.",
+                packages: [
+                    {
+                        name: "Half Day Explorer",
+                        duration: "4 Hours",
+                        price: "8,500",
+                        features: [
+                            "Professional safari guide",
+                            "4x4 safari vehicle",
+                            "Main circuit exploration",
+                            "Wildlife spotting",
+                            "Refreshments included",
+                            "Photography opportunities"
+                        ],
+                        popular: false
+                    },
+                    {
+                        name: "Full Day Adventure",
+                        duration: "8 Hours",
+                        price: "15,000",
+                        features: [
+                            "Extended safari circuits",
+                            "Animal feeding experience",
+                            "Lunch at park restaurant",
+                            "Multiple game drives",
+                            "Bird watching session",
+                            "Photography stops allowed"
+                        ],
+                        popular: true
+                    },
+                    {
+                        name: "Premium Wildlife",
+                        duration: "6 Hours",
+                        price: "22,000",
+                        features: [
+                            "Exclusive routes access",
+                            "Photo walk opportunities",
+                            "Naturalist guide",
+                            "Gourmet lunch included",
+                            "Binoculars provided",
+                            "Small group (max 4 people)"
+                        ],
+                        popular: false
+                    },
+                    {
+                        name: "Luxury Safari",
+                        duration: "10 Hours",
+                        price: "35,000",
+                        features: [
+                            "Private safari vehicle",
+                            "All circuits included",
+                            "Animal feeding sessions",
+                            "Walking safari option",
+                            "5-star lunch experience",
+                            "Professional photography guide"
+                        ],
+                        popular: false
+                    }
+                ]
+            },
+            udawalawe: {
+                title: "Udawalawe National Park",
+                description: "Udawalawe National Park is renowned for its large herds of elephants and open grassland habitat. Established around the Udawalawe Reservoir, this park offers excellent wildlife viewing with minimal vegetation obstruction, making it a photographer's paradise and perfect for observing elephant behavior.",
+                packages: [
+                    {
+                        name: "Elephant Encounter",
+                        duration: "5 Hours",
+                        price: "9,500",
+                        features: [
+                            "Elephant observation focus",
+                            "4x4 safari vehicle",
+                            "Open grassland routes",
+                            "Wildlife photography",
+                            "Refreshments included",
+                            "Elephant orphanage visit"
+                        ],
+                        popular: false
+                    },
+                    {
+                        name: "Photography Safari",
+                        duration: "7 Hours",
+                        price: "18,000",
+                        features: [
+                            "Photography-focused tour",
+                            "Animal feeding experience",
+                            "Multiple viewpoints",
+                            "Professional photo guidance",
+                            "Lunch at scenic location",
+                            "Walking opportunities"
+                        ],
+                        popular: true
+                    },
+                    {
+                        name: "Nature Explorer",
+                        duration: "6 Hours",
+                        price: "16,500",
+                        features: [
+                            "Diverse wildlife routes",
+                            "Photo stops allowed",
+                            "Bird watching session",
+                            "Packed gourmet lunch",
+                            "Wetland exploration",
+                            "Small group experience"
+                        ],
+                        popular: false
+                    },
+                    {
+                        name: "Ultimate Udawalawe",
+                        duration: "12 Hours",
+                        price: "32,000",
+                        features: [
+                            "Comprehensive park tour",
+                            "Multiple feeding sessions",
+                            "Extended photo walks",
+                            "Sunrise & sunset drives",
+                            "Premium dining experience",
+                            "Private guide & vehicle"
+                        ],
+                        popular: false
+                    }
+                ]
+            },
+            minneriya: {
+                title: "Minneriya National Park",
+                description: "Minneriya National Park is famous for 'The Gathering' - the largest meeting of Asian elephants in the world, occurring during the dry season. Built around the ancient Minneriya Tank constructed in the 3rd century AD, this park offers unique wildlife experiences with spectacular elephant congregations.",
+                packages: [
+                    {
+                        name: "The Gathering Tour",
+                        duration: "4 Hours",
+                        price: "10,000",
+                        features: [
+                            "Elephant gathering focus",
+                            "4x4 safari vehicle",
+                            "Ancient tank circuit",
+                            "Wildlife photography",
+                            "Cultural site visit",
+                            "Refreshments provided"
+                        ],
+                        popular: false
+                    },
+                    {
+                        name: "Heritage & Wildlife",
+                        duration: "8 Hours",
+                        price: "19,500",
+                        features: [
+                            "Historical sites exploration",
+                            "Animal feeding experience",
+                            "Ancient tank tour",
+                            "Multiple game drives",
+                            "Cultural lunch experience",
+                            "Photography walks allowed"
+                        ],
+                        popular: true
+                    },
+                    {
+                        name: "Wetland Safari",
+                        duration: "6 Hours",
+                        price: "17,000",
+                        features: [
+                            "Wetland ecosystems focus",
+                            "Photo stops permitted",
+                            "Bird watching expertise",
+                            "Gourmet picnic lunch",
+                            "Aquatic wildlife viewing",
+                            "Expert naturalist guide"
+                        ],
+                        popular: false
+                    },
+                    {
+                        name: "Royal Minneriya",
+                        duration: "10 Hours",
+                        price: "38,000",
+                        features: [
+                            "VIP park access",
+                            "Multiple feeding sessions",
+                            "Exclusive photo walks",
+                            "Ancient palace ruins tour",
+                            "Royal dining experience",
+                            "Private luxury vehicle"
+                        ],
+                        popular: false
+                    }
+                ]
+            },
+            wilpattu: {
+                title: "Wilpattu National Park",
+                description: "Wilpattu National Park, Sri Lanka's largest national park, is renowned for its unique 'Willus' (natural lakes) and dense forest cover. This pristine wilderness offers excellent leopard viewing opportunities and represents one of the most untouched ecosystems in the country, perfect for authentic wildlife experiences.",
+                packages: [
+                    {
+                        name: "Wilderness Explorer",
+                        duration: "5 Hours",
+                        price: "11,000",
+                        features: [
+                            "Dense forest exploration",
+                            "4x4 safari vehicle",
+                            "Natural lakes circuit",
+                            "Leopard tracking focus",
+                            "Wildlife photography",
+                            "Traditional refreshments"
+                        ],
+                        popular: false
+                    },
+                    {
+                        name: "Leopard Tracker",
+                        duration: "9 Hours",
+                        price: "21,000",
+                        features: [
+                            "Leopard behavior study",
+                            "Animal feeding sessions",
+                            "Multiple willu visits",
+                            "Extended tracking time",
+                            "Jungle lunch experience",
+                            "Walking safari segments"
+                        ],
+                        popular: true
+                    },
+                    {
+                        name: "Lake Circuit Safari",
+                        duration: "7 Hours",
+                        price: "18,500",
+                        features: [
+                            "All major willus tour",
+                            "Photography stops enabled",
+                            "Aquatic bird watching",
+                            "Lakeside picnic lunch",
+                            "Swimming opportunity",
+                            "Small group setting"
+                        ],
+                        popular: false
+                    },
+                    {
+                        name: "Pristine Wilpattu",
+                        duration: "12 Hours",
+                        price: "42,000",
+                        features: [
+                            "Complete park coverage",
+                            "Feeding experience included",
+                            "Extensive photo walks",
+                            "Sunrise lake meditation",
+                            "Gourmet wilderness dining",
+                            "Private expert guide"
+                        ],
+                        popular: false
+                    }
+                ]
+            }
+        };
+
+        let selectedForest = null;
+
+       
+        document.querySelectorAll('.forest-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const forestKey = this.dataset.forest;
+                showPackages(forestKey);
+            });
+        });
+
+        function showPackages(forestKey) {
+            selectedForest = forestKey;
+            const forestInfo = forestData[forestKey];
+            
+         
+            document.getElementById('selectedForestTitle').textContent = forestInfo.title;
+            document.getElementById('selectedForestDescription').textContent = forestInfo.description;
+            
+            
+            const packagesGrid = document.getElementById('packagesGrid');
+            packagesGrid.innerHTML = forestInfo.packages.map(package => `
+                <div class="package-card">
+                    ${package.popular ? '<div class="popular-badge">Most Popular</div>' : ''}
+                    <div class="package-header">
+                        <div class="package-name">${package.name}</div>
+                        <div class="package-duration">${package.duration}</div>
+                    </div>
+                    <div class="package-content">
+                        <div class="package-price">
+                            <span class="price-amount">LKR ${package.price}</span>
+                            <span class="price-currency">per person</span>
+                        </div>
+                        <ul class="package-features">
+                            ${package.features.map(feature => `
+                                <li>
+                                    <i class="fas fa-check feature-icon"></i>
+                                    ${feature}
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <button class="btn-book" onclick="window.location.href='book.html'">
+                            <i class="fas fa-calendar-check"></i>
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+           
+            document.getElementById('forestSelection').style.display = 'none';
+            document.getElementById('packagesSection').classList.add('active');
+            
+            
+            document.getElementById('packagesSection').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        function showForestSelection() {
+            document.getElementById('packagesSection').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('forestSelection').style.display = 'block';
+                document.getElementById('packagesSection').style.display = 'none';
+                
+                
+                document.getElementById('forestSelection').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 300);
+        }
+
+        function bookPackage(packageName, forestName) {
+            
+            const confirmation = confirm(`Book "${packageName}" tour at ${forestName}?\n\nYou will be redirected to the booking form.`);
+            
+            if (confirmation) {
+                
+                alert(`Thank you for choosing "${packageName}" at ${forestName}!\n\nOur team will contact you shortly to confirm your booking details.`);
+                
+                
+            }
+        }
+
+        function toggleMobileMenu() {
+            const navbar = document.getElementById('navbarNav');
+            navbar.classList.toggle('hidden');
+        }
+
+       
+        function toggleProfileMenu() {
+            console.log('Profile menu clicked');
+        }
+
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        
+        function showLoading() {
+            return '<div class="loading"><i class="fas fa-spinner"></i><p>Loading packages...</p></div>';
+        }
+
+        
+        document.querySelectorAll('.forest-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        
+        window.addEventListener('load', function() {
+            const forestCards = document.querySelectorAll('.forest-card');
+            forestCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(30px)';
+                    card.style.transition = 'all 0.6s ease-out';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 150);
+            });
+        });
+
+        
+        function showForestSelection() {
+            document.getElementById('packagesSection').classList.remove('active');
+            
+            
+            const packagesSection = document.getElementById('packagesSection');
+            packagesSection.style.opacity = '0';
+            packagesSection.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                document.getElementById('forestSelection').style.display = 'block';
+                packagesSection.style.display = 'none';
+                
+                
+                packagesSection.style.opacity = '1';
+                packagesSection.style.transform = 'translateY(0)';
+                
+                document.getElementById('forestSelection').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 300);
+        }
+
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (document.getElementById('packagesSection').classList.contains('active')) {
+                    showForestSelection();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

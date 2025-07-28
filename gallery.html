@@ -1,0 +1,947 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crusoe Safari - Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-green': '#123332',
+                        'dark-green': '#12271c',
+                        'accent-orange': '#84a972',
+                        'light-cream': '#f0f5f0',
+                        'text-light': '#E8E6E3',
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --primary-green: #123332;
+            --dark-green: #12271c;
+            --accent-orange: #84a972;
+            --light-cream: #f0f5f0;
+            --text-light: #E8E6E3;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Quattrocento", serif;
+            font-weight: 400;
+            font-style: normal;
+            background: linear-gradient(135deg, rgba(18, 51, 50, 0.95), rgba(18, 39, 28, 0.9)), url('img/bg10.png');
+            background-size: cover;
+            background-attachment: fixed;
+            color: var(--text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background: rgba(18, 39, 28, 0.98) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(132, 169, 114, 0.2);
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text-light) !important;
+        }
+        
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            margin: 0 2rem;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 40px;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-orange) !important;
+        }
+        
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--accent-orange);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .navbar-nav .nav-link.active {
+            color: var(--accent-orange) !important;
+        }
+
+        .navbar-nav .nav-link.active::after {
+            width: 100%;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: 2rem;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(132, 169, 114, 0.3);
+        }
+
+        .page-header {
+            padding: 150px 0 100px 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(18, 51, 50, 0.8), rgba(18, 39, 28, 0.6));
+        }
+
+        .page-title {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--light-cream);
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            background: rgba(132, 169, 114, 0.2);
+            color: var(--text-light);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            border: 2px solid rgba(132, 169, 114, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-tab:hover,
+        .filter-tab.active {
+            background: var(--accent-orange);
+            border-color: var(--accent-orange);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(132, 169, 114, 0.3);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .gallery-item {
+            background: rgba(18, 51, 50, 0.9);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(132, 169, 114, 0.2);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-orange);
+        }
+
+        .gallery-image {
+            position: relative;
+            overflow: hidden;
+            height: 250px;
+        }
+
+        .gallery-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover .gallery-image img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(18, 51, 50, 0.8), rgba(132, 169, 114, 0.6));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay-content {
+            text-align: center;
+            color: white;
+        }
+
+        .gallery-overlay-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--accent-orange);
+        }
+
+        .gallery-content {
+            padding: 1.5rem;
+        }
+
+        .gallery-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--light-cream);
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-description {
+            color: var(--text-light);
+            opacity: 0.9;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .gallery-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--accent-orange);
+        }
+
+        .gallery-category {
+            background: rgba(132, 169, 114, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            animation: lightboxSlide 0.3s ease-out;
+        }
+
+        @keyframes lightboxSlide {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .lightbox-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-orange);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            background: #6d8a5e;
+            transform: scale(1.1);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(132, 169, 114, 0.8);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-nav:hover {
+            background: var(--accent-orange);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .lightbox-prev {
+            left: -80px;
+        }
+
+        .lightbox-next {
+            right: -80px;
+        }
+
+        .lightbox-info {
+            position: absolute;
+            bottom: -60px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: white;
+        }
+
+        .lightbox-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .lightbox-description {
+            opacity: 0.8;
+        }
+
+        .stats-section {
+            background: rgba(18, 51, 50, 0.9);
+            padding: 4rem 0;
+            margin: 4rem 0;
+            border-radius: 20px;
+            border: 1px solid rgba(132, 169, 114, 0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 2rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .filter-tabs {
+                gap: 1rem;
+            }
+
+            .filter-tab {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .navbar-nav .nav-link {
+                margin: 0 1rem;
+            }
+
+            .lightbox-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .lightbox-prev {
+                left: -60px;
+            }
+
+            .lightbox-next {
+                right: -60px;
+            }
+
+            .lightbox-close {
+                top: -30px;
+                right: -30px;
+                width: 35px;
+                height: 35px;
+            }
+        }
+
+        .load-more-btn {
+            background: var(--accent-orange);
+            color: white;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 3rem auto;
+        }
+
+        .load-more-btn:hover {
+            background: #6d8a5e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(132, 169, 114, 0.3);
+        }
+
+        .gallery-item.hidden {
+            display: none;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar fixed top-0 w-full z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <a class="navbar-brand" href="homepage.html">
+                    <img src="img/logo.png" class="w-44 h-20" alt="Crusoe Safari">
+                </a>
+                
+                <button class="lg:hidden text-text-light" onclick="toggleMobileMenu()">
+                    <span class="block w-6 h-0.5 bg-current mb-1"></span>
+                    <span class="block w-6 h-0.5 bg-current mb-1"></span>
+                    <span class="block w-6 h-0.5 bg-current"></span>
+                </button>
+                
+                <div class="hidden lg:flex items-center">
+                    <ul class="navbar-nav">
+                        <li><a class="nav-link" href="homepage.html">Home</a></li>
+                        <li><a class="nav-link" href="booking.html">Bookings</a></li>
+                        <li><a class="nav-link" href="tours.html">Tours</a></li>
+                        <li><a class="nav-link active" href="#gallery">Gallery</a></li>
+                        <li><a class="nav-link" href="#about">About</a></li>
+                    </ul>
+                    
+                    <div class="user-profile">
+                        <div class="profile-avatar" onclick="toggleProfileMenu()">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="navbarNav" class="hidden absolute top-full left-0 w-full bg-primary-green lg:hidden">
+                    <ul class="navbar-nav flex flex-col">
+                        <li><a class="nav-link block px-4 py-3" href="homepage.html">Home</a></li>
+                        <li><a class="nav-link block px-4 py-3" href="booking.html">Bookings</a></li>
+                        <li><a class="nav-link block px-4 py-3" href="tours.html">Tours</a></li>
+                        <li><a class="nav-link active block px-4 py-3" href="#gallery">Gallery</a></li>
+                        <li><a class="nav-link block px-4 py-3" href="#about">About</a></li>
+                        <li><a class="nav-link block px-4 py-3" href="#profile">Profile</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="container mx-auto px-4">
+            <h1 class="page-title">Wildlife Gallery</h1>
+            <p class="page-subtitle">
+                Explore stunning moments captured during our safari adventures. Witness the beauty and majesty of Sri Lanka's incredible wildlife.
+            </p>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-16">
+        <div class="filter-tabs">
+            <div class="filter-tab active" data-category="all">
+                <i class="fas fa-th"></i>
+                All Photos
+            </div>
+            <div class="filter-tab" data-category="leopards">
+                <i class="fas fa-paw"></i>
+                Leopards
+            </div>
+            <div class="filter-tab" data-category="elephants">
+                <i class="fas fa-horse"></i>
+                Elephants
+            </div>
+            <div class="filter-tab" data-category="birds">
+                <i class="fas fa-dove"></i>
+                Birds
+            </div>
+            <div class="filter-tab" data-category="landscapes">
+                <i class="fas fa-mountain"></i>
+                Landscapes
+            </div>
+            <div class="filter-tab" data-category="safari">
+                <i class="fas fa-binoculars"></i>
+                Safari Life
+            </div>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+            <div class="gallery-item fade-in" data-category="leopards">
+                <div class="gallery-image">
+                    <img src="img/gallery/leopard1.jpg" alt="Sri Lankan Leopard">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <i class="fas fa-search-plus gallery-overlay-icon"></i>
+                            <p>View Full Size</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-content">
+                    <h3 class="gallery-title">New Life</h3>
+                    <p class="gallery-description">Adorable baby elephant staying close to its protective mother in the herd.</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-category">Elephants</span>
+                        <span><i class="fas fa-camera"></i> Udawalawe Park</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="load-more-btn" onclick="loadMoreImages()">
+            <i class="fas fa-plus"></i> Load More Photos
+        </button>
+
+        <div class="stats-section">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold mb-4" style="color: var(--light-cream);">Our Gallery Statistics</h2>
+                    <p class="text-lg opacity-90" style="color: var(--text-light);">Numbers that showcase our wildlife photography journey</p>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Wildlife Photos</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Species Captured</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">15+</span>
+                        <span class="stat-label">National Parks</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">1000+</span>
+                        <span class="stat-label">Happy Guests</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: rgba(18, 51, 50, 0.9); padding: 3rem; border-radius: 16px; margin-top: 4rem; text-align: center; border: 1px solid rgba(132, 169, 114, 0.2);">
+            <h3 style="color: var(--light-cream); font-size: 2rem; margin-bottom: 1rem;">Capture Your Own Memories</h3>
+            <p style="color: var(--text-light); opacity: 0.9; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Join us on an unforgettable safari adventure and create your own collection of stunning wildlife photographs. Our expert guides will help you capture the perfect shot.
+            </p>
+            <a href="booking.html" style="background: var(--accent-orange); color: white; padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease;">
+                <i class="fas fa-camera"></i>
+                Book Your Safari
+            </a>
+        </div>
+    </div>
+
+    <footer style="background-color: var(--primary-green); border-top: 1px solid rgba(132, 169, 114, 0.2); margin-top: 4rem;">
+        <div class="container mx-auto px-4 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="footer-section">
+                    <div class="mb-6">
+                        <img src="img/logo.png" alt="Crusoe Safari" class="w-40 h-20">
+                    </div>
+                    <p class="opacity-80 mb-6 leading-relaxed" style="color: var(--text-light);">
+                        Experience the ultimate Sri Lankan wildlife adventure with Crusoe Safari. We provide authentic, sustainable wildlife experiences that connect you with nature.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" style="width: 40px; height: 40px; background: rgba(132, 169, 114, 0.2); border: 1px solid rgba(132, 169, 114, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-orange); text-decoration: none; transition: all 0.3s ease;">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" style="width: 40px; height: 40px; background: rgba(132, 169, 114, 0.2); border: 1px solid rgba(132, 169, 114, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-orange); text-decoration: none; transition: all 0.3s ease;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" style="width: 40px; height: 40px; background: rgba(132, 169, 114, 0.2); border: 1px solid rgba(132, 169, 114, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-orange); text-decoration: none; transition: all 0.3s ease;">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" style="width: 40px; height: 40px; background: rgba(132, 169, 114, 0.2); border: 1px solid rgba(132, 169, 114, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-orange); text-decoration: none; transition: all 0.3s ease;">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--light-cream); margin-bottom: 1.5rem;">Quick Links</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.75rem;">
+                            <a href="homepage.html" style="color: var(--text-light); opacity: 0.8; text-decoration: none; transition: all 0.3s ease;">Home</a>
+                        </li>
+                        <li style="margin-bottom: 0.75rem;">
+                            <a href="tours.html" style="color: var(--text-light); opacity: 0.8; text-decoration: none; transition: all 0.3s ease;">Tours</a>
+                        </li>
+                        <li style="margin-bottom: 0.75rem;">
+                            <a href="booking.html" style="color: var(--text-light); opacity: 0.8; text-decoration: none; transition: all 0.3s ease;">Bookings</a>
+                        </li>
+                        <li style="margin-bottom: 0.75rem;">
+                            <a href="#gallery" style="color: var(--text-light); opacity: 0.8; text-decoration: none; transition: all 0.3s ease;">Gallery</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--light-cream); margin-bottom: 1.5rem;">Safari Activities</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.75rem;">
+                            <a href="#" style="color: var(--text-light); opacity: 0.8; text-decoration: none; transition: all 0.3s ease;">Wildlife Photography</a>
+                        </li>
+                        <li style="margin-bottom: 0.75rem;">
+                            <a href="#" style="color: var(--text-light); opacity: 0.8; text-decoration: none; transition: all 0.3s ease;">Game Drives</a>
+                        </li>
+                        <li style="margin-bottom: 0.75rem;">
+                            <a href="#" style="color: var(--text-light); opacity: 0.8; text-decoration: none; transition: all 0.3s ease;">Night Safaris</a>
+                        </li>
+                        <li style="margin-bottom: 0.75rem;">
+                            <a href="#" style="color: var(--text-light); opacity: 0.8; text-decoration: none; transition: all 0.3s ease;">Bird Watching</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--light-cream); margin-bottom: 1.5rem;">Contact Info</h3>
+                    <div>
+                        <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; color: var(--text-light);">
+                            <i class="fas fa-map-marker-alt" style="color: var(--accent-orange); width: 20px; margin-top: 2px;"></i>
+                            <span>123 Safari Avenue<br>Colombo, Sri Lanka</span>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; color: var(--text-light);">
+                            <i class="fas fa-phone" style="color: var(--accent-orange); width: 20px; margin-top: 2px;"></i>
+                            <span>+94 11 234 5678</span>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; color: var(--text-light);">
+                            <i class="fas fa-envelope" style="color: var(--accent-orange); width: 20px; margin-top: 2px;"></i>
+                            <span>info@crusoesafari.lk</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background-color: var(--dark-green); border-top: 1px solid rgba(132, 169, 114, 0.1); padding: 1.5rem 0;">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row items-center justify-between opacity-70" style="color: var(--text-light);">
+                    <p>&copy; 2024 Crusoe Safari. All rights reserved.</p>
+                    <div class="flex space-x-6 mt-4 md:mt-0">
+                        <a href="#" style="color: var(--text-light); text-decoration: none; transition: color 0.3s ease;">Privacy Policy</a>
+                        <a href="#" style="color: var(--text-light); text-decoration: none; transition: color 0.3s ease;">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox()">
+                <i class="fas fa-times"></i>
+            </button>
+            <button class="lightbox-nav lightbox-prev" onclick="prevImage()">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="lightbox-nav lightbox-next" onclick="nextImage()">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <img class="lightbox-image" id="lightboxImage" src="" alt="">
+            <div class="lightbox-info">
+                <div class="lightbox-title" id="lightboxTitle"></div>
+                <div class="lightbox-description" id="lightboxDescription"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentImageIndex = 0;
+        let currentImages = [];
+        let currentCategory = 'all';
+
+        function toggleMobileMenu() {
+            const navbar = document.getElementById('navbarNav');
+            navbar.classList.toggle('hidden');
+        }
+
+        function toggleProfileMenu() {
+            console.log('Profile menu clicked');
+        }
+
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                const category = this.dataset.category;
+                currentCategory = category;
+                filterGallery(category);
+            });
+        });
+
+        function filterGallery(category) {
+            const items = document.querySelectorAll('.gallery-item');
+            items.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                    item.classList.add('fade-in');
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            updateCurrentImages();
+        }
+
+        function updateCurrentImages() {
+            const visibleItems = document.querySelectorAll('.gallery-item:not([style*="display: none"])');
+            currentImages = Array.from(visibleItems).map(item => {
+                const img = item.querySelector('.gallery-image img');
+                const title = item.querySelector('.gallery-title').textContent;
+                const description = item.querySelector('.gallery-description').textContent;
+                return {
+                    src: img.src,
+                    title: title,
+                    description: description
+                };
+            });
+        }
+
+        document.querySelectorAll('.gallery-item').forEach((item, index) => {
+            item.addEventListener('click', function() {
+                const img = this.querySelector('.gallery-image img');
+                const title = this.querySelector('.gallery-title').textContent;
+                const description = this.querySelector('.gallery-description').textContent;
+                
+                updateCurrentImages();
+                
+                const visibleItems = Array.from(document.querySelectorAll('.gallery-item:not([style*="display: none"])'));
+                currentImageIndex = visibleItems.indexOf(this);
+                
+                openLightbox(img.src, title, description);
+            });
+        });
+
+        function openLightbox(src, title, description) {
+            document.getElementById('lightboxImage').src = src;
+            document.getElementById('lightboxTitle').textContent = title;
+            document.getElementById('lightboxDescription').textContent = description;
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+            const image = currentImages[currentImageIndex];
+            openLightbox(image.src, image.title, image.description);
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+            const image = currentImages[currentImageIndex];
+            openLightbox(image.src, image.title, image.description);
+        }
+
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('lightbox').classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                } else if (e.key === 'ArrowLeft') {
+                    prevImage();
+                } else if (e.key === 'ArrowRight') {
+                    nextImage();
+                }
+            }
+        });
+
+        function loadMoreImages() {
+            const hiddenItems = document.querySelectorAll('.gallery-item.hidden');
+            const itemsToShow = Math.min(3, hiddenItems.length);
+            
+            for (let i = 0; i < itemsToShow; i++) {
+                hiddenItems[i].classList.remove('hidden');
+                hiddenItems[i].classList.add('fade-in');
+            }
+            
+            if (hiddenItems.length <= itemsToShow) {
+                document.querySelector('.load-more-btn').style.display = 'none';
+            }
+            
+            updateCurrentImages();
+        }
+
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(18, 39, 28, 0.98)';
+            } else {
+                navbar.style.background = 'rgba(18, 39, 28, 0.95)';
+            }
+        });
+
+        updateCurrentImages();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                    }
+                });
+            });
+
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                observer.observe(item);
+            });
+        });
+    </script>
+</body>
+</html>>
